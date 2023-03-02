@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
     '''
     fieldsets = (
         (None, {"fields": ("username", "password",)}),
-        (("Personal info"), {"fields": ("firstname", "lastname", "email")}),
+        (("Personal info"), {"fields": ("first_name", "last_name", "email")}),
         (
             ("Permissions"),
             {
@@ -29,11 +29,11 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("username", "email", "firstname", "lastname", "password1", "password2",),
+                "fields": ("username", "email", "first_name", "last_name", "password1", "password2",),
             },
         ),
     )
-    list_display = ("username", "email", "firstname", "lastname", "gender", "is_staff", "last_login")
+    list_display = ("username", "email", "first_name", "last_name", "gender", "is_staff", "last_login")
     list_filter = ("is_staff", "is_superuser", "is_active", "last_login")
-    search_fields = ("username", "firstname", "lastname", "email")
+    search_fields = ("username", "first_name", "last_name", "email")
     filter_horizontal = ()

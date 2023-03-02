@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from validate_email_address import validate_email
 
 # Create your models here.
 
@@ -11,31 +10,29 @@ class UserManager(BaseUserManager):
     '''
     This class is for user management model
     '''
-    
-    def create(self, username, email, firstname, lastname, gender, password=None):
+
+    def create(self, username, email, first_name, last_name, gender, password=None):
 
         if not username:
             raise ValueError('Users must have a username')
-        if validate_email(email, check_mx=True, verify=True) == None or validate_email(email, check_mx=True, verify=True) == False:
-            raise ValidationError('The desired email is invalid. Please enter a valid email')
 
         user = self.model(
             username=username,
             email=email,
-            firstname=firstname,
-            lastname=lastname,
+            first_name=first_name,
+            last_name=last_name,
             gender=gender,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, firstname, lastname, gender, password):
+    def create_superuser(self, username, email, first_name, last_name, gender, password):
         user = self.create(
             username=username,
             email=email,
-            firstname=firstname,
-            lastname=lastname,
+            first_name=first_name,
+            last_name=last_name,
             gender=gender,
             password=password,
         )
@@ -52,7 +49,7 @@ class User(AbstractBaseUser):
     This class is for defining the user model whose fields are included username and email, first and last name and gender
     '''
     GENDER = (
-        ('Mr', 'Man'),
+        ('mr', 'Man'),
         ('mrs', 'Female')
     )
     username_regex = RegexValidator(
@@ -78,14 +75,14 @@ class User(AbstractBaseUser):
         verbose_name='Email Address',
         validators=[email_regex]
     )
-    firstname = models.CharField(
+    first_name = models.CharField(
         max_length=30,
-        verbose_name='first name',
+        verbose_name='First Name',
         validators=[name_regex]
     )
-    lastname = models.CharField(
+    last_name = models.CharField(
         max_length=30,
-        verbose_name='last name',
+        verbose_name='Last Name',
         validators=[name_regex]
     )
     gender = models.CharField(
@@ -96,13 +93,15 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)  # access to admin panel
     is_admin = models.BooleanField(default=False)  # admin user / not superuser
     is_superuser = models.BooleanField(default=False)  # superuser
-    last_login = models.DateTimeField(auto_now=True, editable=False, blank=True)  # last login user
-    account_creation_date = models.DateTimeField(auto_now_add=True, editable=False, blank=True)  # user account creation date
+    last_login = models.DateTimeField(
+        auto_now=True, editable=False, blank=True)  # last login user
+    account_creation_date = models.DateTimeField(
+        auto_now_add=True, editable=False, blank=True)  # user account creation date
 
     objects = UserManager()
 
     USERNAME_FIELD = 'username'  # & Password is required by default.
-    REQUIRED_FIELDS = ['email', 'firstname', 'lastname', 'gender']
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'gender']
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -113,6 +112,6 @@ class User(AbstractBaseUser):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-    
+
     def __str__(self):
         return self.username
