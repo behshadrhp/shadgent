@@ -6,7 +6,46 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 # Create your models here.
 
 
+class UserManager(BaseUserManager):
+    '''
+    This class is for user management model
+    '''
+    def create(self, username, email, firstname, lastname, gender, password=None):
+        if not username:
+            raise ValueError('Users must have a username')
+
+        user = self.model(
+            username=self.normalize_username(username),
+            email=self.normalize_email(email),
+            firstname=firstname,
+            lastname=lastname,
+            gender=gender,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, firstname, lastname, gender, password):
+        user = self.create_user(
+            username=username,
+            email=email,
+            firstname=firstname,
+            lastname=lastname,
+            gender=gender,
+            password=password,
+        )
+        user.is_staff = True
+        user.is_admin = True
+        user.is_superuser = True
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
 class User(AbstractBaseUser):
+    '''
+    This class is for defining the user model whose fields are included username and email, first and last name and gender
+    '''
     GENDER = (
         ('Mr', 'Man'),
         ('mrs', 'Female')
@@ -54,6 +93,8 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)  # superuser
     last_login = models.DateTimeField(auto_now=True)  # last login user
     account_creation_date = models.DateTimeField(auto_now_add=True)  # user account creation date
+
+    objects = UserManager()
 
     USERNAME_FIELD = 'username'  # & Password is required by default.
     REQUIRED_FIELDS = ['email', 'lastname', 'firstname', 'gender']
