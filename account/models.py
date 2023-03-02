@@ -102,8 +102,8 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)  # access to admin panel
     is_admin = models.BooleanField(default=False)  # admin user / not superuser
     is_superuser = models.BooleanField(default=False)  # superuser
-    last_login = models.DateTimeField(auto_now=True)  # last login user
-    account_creation_date = models.DateTimeField(auto_now_add=True)  # user account creation date
+    last_login = models.DateTimeField(auto_now=True, editable=False, blank=True)  # last login user
+    account_creation_date = models.DateTimeField(auto_now_add=True, editable=False, blank=True)  # user account creation date
 
     objects = UserManager()
 
