@@ -9,21 +9,6 @@ class UserAdmin(BaseUserAdmin):
     '''
     This class is the admin panel of the user
     '''
-    fieldsets = (
-        (None, {"fields": ("username", "password",)}),
-        (("Personal info"), {"fields": ("first_name", "last_name", "email")}),
-        (
-            ("Permissions"),
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                ),
-            },
-        ),
-        (("Important dates"), {"fields": ()}),
-    )
     add_fieldsets = (
         (
             None,
@@ -33,7 +18,5 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    list_display = ("username", "email", "first_name", "last_name", "gender", "is_staff", "last_login")
-    list_filter = ("is_staff", "is_superuser", "is_active", "last_login")
-    search_fields = ("username", "first_name", "last_name", "email")
-    filter_horizontal = ()
+    list_display = ("username", "email", "first_name", "last_name", "is_staff", "last_login", "date_joined")
+    list_filter = ("is_staff", "is_superuser", "is_active", "groups", "last_login")
