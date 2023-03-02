@@ -11,18 +11,12 @@ class UserManager(BaseUserManager):
     '''
     This class is for user management model
     '''
+    
     def create(self, username, email, firstname, lastname, gender, password=None):
-
-        def verify_email_address(email):
-            return validate_email(
-                email, 
-                check_mx=True, 
-                verify=True
-            )
 
         if not username:
             raise ValueError('Users must have a username')
-        if verify_email_address(email) == None or verify_email_address == False:
+        if validate_email(email, check_mx=True, verify=True) == None or validate_email(email, check_mx=True, verify=True) == False:
             raise ValidationError('The desired email is invalid. Please enter a valid email')
 
         user = self.model(
@@ -63,7 +57,7 @@ class User(AbstractBaseUser):
     )
     username_regex = RegexValidator(
         regex=r'^[a-zA-Z][a-zA-Z0-9]{6,30}$',
-        message='Only English letters and numbers are allowed and the numbers must be after the letters',
+        message='Only English letters and numbers are allowed, and the numbers must be after the letters, and the allowed characters are between 6 and 30',
     )
     email_regex = RegexValidator(
         regex=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -71,7 +65,7 @@ class User(AbstractBaseUser):
     )
     name_regex = RegexValidator(
         regex=r'^[a-zA-Z]{2,30}$',
-        message='The format is not valid\nOnly English letters and numbers are allowed',
+        message='Only English letters and numbers are allowed, and the allowed characters are between 2 and 30',
     )
     username = models.CharField(
         unique=True,

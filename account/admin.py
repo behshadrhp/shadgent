@@ -6,6 +6,9 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    '''
+    This class is the admin panel of the user
+    '''
     fieldsets = (
         (None, {"fields": ("username", "password",)}),
         (("Personal info"), {"fields": ("firstname", "lastname", "email")}),
@@ -30,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    list_display = ("username", "email", "firstname", "lastname", "gender", "is_staff")
-    list_filter = ("is_staff", "is_superuser", "is_active")
+    list_display = ("username", "email", "firstname", "lastname", "gender", "is_staff", "last_login")
+    list_filter = ("is_staff", "is_superuser", "is_active", "last_login")
     search_fields = ("username", "firstname", "lastname", "email")
     filter_horizontal = ()
