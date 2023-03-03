@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
+from json import load
 
 # Create your models here.
 
@@ -55,6 +56,16 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'username'  # & Password is required by default.
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'gender']
+
+    def clean(self):
+        username = self.username.lower()
+
+        with open('account/username-reserved/username.json', 'r') as usernames:
+            username_reserved = load(usernames)
+
+        for item in username_reserved:
+            if username == item:
+                raise ValidationError('Sorry, this username is not allowed')
 
     def __str__(self):
         return self.username
