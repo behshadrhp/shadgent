@@ -1,0 +1,11 @@
+# virtual env
+Pipfile
+Pipfile.lock
+env/
+
+# migrations
+account/migrations
+
+# pycache
+core/__pycache__/
+account/__pycache__/
