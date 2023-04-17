@@ -117,7 +117,7 @@ class Sale(models.Model):
         on_delete=models.CASCADE
     )
     estate = models.ForeignKey(
-        Estate, 
+        Estate,
         on_delete=models.CASCADE
     )
     price_per_meter = MoneyField(
@@ -134,8 +134,15 @@ class Sale(models.Model):
     # property checklist
     exchange = models.BooleanField(default=False)
 
+    # create - update Time
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.estate
+
+    class Meta:
+        ordering = ['update_at']
 
 
 class Rent(models.Model):
@@ -146,7 +153,7 @@ class Rent(models.Model):
         on_delete=models.CASCADE
     )
     estate = models.ForeignKey(
-        Estate, 
+        Estate,
         on_delete=models.CASCADE
     )
     annual_mortgage = MoneyField(
@@ -172,3 +179,6 @@ class Rent(models.Model):
 
     def __str__(self):
         return self.estate
+
+    class Meta:
+        ordering = ['-update_at']
