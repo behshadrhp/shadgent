@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Framework - Library
+    'djmoney',
     #Applications
     'account', # User Account app
     'estate', # Real estate property information app

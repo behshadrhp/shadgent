@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+from djmoney.models.fields import MoneyField
 from estate.validator import english_regex
 
 
@@ -106,3 +107,68 @@ class Estate(models.Model):
 
     class Meta:
         ordering = ['-update_at']
+
+
+class Sale(models.Model):
+    '''This class is for pricing based on estate sale parameters'''
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    estate = models.ForeignKey(
+        Estate, 
+        on_delete=models.CASCADE
+    )
+    price_per_meter = MoneyField(
+        max_digits=14, decimal_places=2, default_currency='USD'
+    )
+    discount = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100),
+        ]
+    )
+
+    # property checklist
+    exchange = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.estate
+
+
+class Rent(models.Model):
+    '''This class is for pricing real estate lease and mortgage'''
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    estate = models.ForeignKey(
+        Estate, 
+        on_delete=models.CASCADE
+    )
+    annual_mortgage = MoneyField(
+        max_digits=14, decimal_places=2, default_currency='USD'
+    )
+    rent_of_months = MoneyField(
+        max_digits=14, decimal_places=2, default_currency='USD'
+    )
+    discount = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100),
+        ]
+    )
+
+    # property checklist
+    exchange = models.BooleanField(default=False)
+
+    # create - update Time
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.estate
