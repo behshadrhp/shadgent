@@ -1,8 +1,8 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
-
-# Create your models here.
+from django.utils.text import slugify
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+from estate.validator import english_regex
 
 
 class Estate(models.Model):
@@ -46,6 +46,25 @@ class Estate(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+    title = models.CharField(
+        max_length=50,
+        unique=True,
+        validators=[
+            RegexValidator(
+                english_regex, 'Only numbers and English letters from 5 to 50 characters are allowed'
+            )
+        ],
+    )
+    slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        allow_unicode=True,
+        validators=[
+            RegexValidator(
+                english_regex, 'Only numbers and English letters from 5 to 50 characters are allowed'
+            )
+        ],
+    )
     status_estate = models.CharField(
         max_length=10, choices=STATUE_ESTATE, default=VILLA
     )
@@ -58,9 +77,9 @@ class Estate(models.Model):
     meterage = models.PositiveIntegerField()
     number_room = models.PositiveIntegerField()
     number_of_floors = models.PositiveIntegerField(
-        default=1, 
+        default=1,
         validators=[
-            MinValueValidator(1), 
+            MinValueValidator(1),
             MaxValueValidator(20)
         ]
     )
@@ -71,3 +90,19 @@ class Estate(models.Model):
     elevator = models.BooleanField(default=False)
     parking = models.BooleanField(default=False)
     yard = models.BooleanField(default=False)
+
+    # create - update Time
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    # Save the slug with the title input parameter
+    def save(self, *args, **kwargs):
+        if not self.title or self.title != self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+        super(Estate, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-update_at']
