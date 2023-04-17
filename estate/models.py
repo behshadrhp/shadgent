@@ -43,7 +43,7 @@ class Estate(models.Model):
         (RENT, 'Rent'),
     ]
 
-    User = models.ForeignKey(
+    owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
