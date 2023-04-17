@@ -75,6 +75,7 @@ class Estate(models.Model):
     type_of_estate_request = models.CharField(
         max_length=5, choices=TYPE_OF_ESTATE_REQUEST, default=RENT
     )
+    description = models.TextField(null=True, blank=True)
     meterage = models.PositiveIntegerField()
     number_room = models.PositiveIntegerField()
     number_of_floors = models.PositiveIntegerField(
