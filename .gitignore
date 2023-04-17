@@ -5,7 +5,11 @@ env/
 
 # migrations
 account/migrations
+!account/migrations/__init__.py
 
 # pycache
 core/__pycache__/
 account/__pycache__/
+
+# database
+db.sqlite3
