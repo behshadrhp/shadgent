@@ -12,6 +12,7 @@ estate/migrations
 # pycache
 core/__pycache__/
 account/__pycache__/
+estate/__pycache__/
 
 # database
 db.sqlite3
