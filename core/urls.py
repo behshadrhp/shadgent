@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('estate/', include('estate.urls')),
 ]
 
 admin.site.site_header = 'ShadoGent Panel'

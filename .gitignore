@@ -6,6 +6,8 @@ env/
 # migrations
 account/migrations
 !account/migrations/__init__.py
+estate/migrations
+!estate/migrations/__init__.py
 
 # pycache
 core/__pycache__/
