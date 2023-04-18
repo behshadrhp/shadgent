@@ -117,12 +117,12 @@ class Sale(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    estate = models.ForeignKey(
+    estate = models.OneToOneField(
         Estate,
         on_delete=models.CASCADE
     )
     price_per_meter = MoneyField(
-        max_digits=14, decimal_places=2, default_currency='USD'
+        max_digits=14, decimal_places=0, default_currency='USD'
     )
     discount = models.IntegerField(
         default=0,
@@ -140,7 +140,7 @@ class Sale(models.Model):
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.estate
+        return self.estate.title
 
     class Meta:
         ordering = ['update_at']
@@ -153,15 +153,15 @@ class Rent(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    estate = models.ForeignKey(
+    estate = models.OneToOneField(
         Estate,
         on_delete=models.CASCADE
     )
     annual_mortgage = MoneyField(
-        max_digits=14, decimal_places=2, default_currency='USD'
+        max_digits=14, decimal_places=0, default_currency='USD'
     )
     rent_of_months = MoneyField(
-        max_digits=14, decimal_places=2, default_currency='USD'
+        max_digits=14, decimal_places=0, default_currency='USD'
     )
     discount = models.IntegerField(
         default=0,
