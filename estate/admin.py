@@ -57,3 +57,50 @@ class EstateAdmin(admin.ModelAdmin):
         # change owner field to owner requested
         obj.owner = request.user
         return super().save_model(request, obj, form, change)
+
+
+@admin.register(models.Sale)
+class SaleAdmin(admin.ModelAdmin):
+    '''This class is for the Sale model in the admin panel'''''
+
+    list_display = [
+        'owner',
+        'estate',
+        'price_per_meter',
+        'discount',
+        'discount_price',
+        'final_price',
+        'exchange',
+    ]
+    list_filter = []
+    search_fields = []
+    fields = [
+        'estate',
+        'price_per_meter',
+        'discount',
+        'exchange',
+    ]
+    list_per_page = 10
+
+
+    def owner(self, owner: models.Estate.owner):
+        return f'{owner.username}'
+    
+    def discount_price(self, sale: models.Sale):
+        Initialـprice = sale.price_per_meter * sale.estate.meterage
+        discount = sale.discount
+        final_price = ((discount / 100) * Initialـprice )
+        return final_price
+
+    def final_price(self, sale: models.Sale):
+        Initialـprice = sale.price_per_meter * sale.estate.meterage
+        discount = sale.discount
+        amount = ((discount / 100) * Initialـprice )
+        final_price = (Initialـprice - amount)
+        return final_price
+
+    # save estate model
+    def save_model(self, request, obj, form, change):
+        # change owner field to owner requested
+        obj.owner = request.user
+        return super().save_model(request, obj, form, change)
