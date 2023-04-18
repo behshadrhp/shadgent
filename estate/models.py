@@ -113,7 +113,7 @@ class Estate(models.Model):
 class Sale(models.Model):
     '''This class is for pricing based on estate sale parameters'''
 
-    user = models.ForeignKey(
+    owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
@@ -149,7 +149,7 @@ class Sale(models.Model):
 class Rent(models.Model):
     '''This class is for pricing real estate lease and mortgage'''
 
-    user = models.ForeignKey(
+    owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
