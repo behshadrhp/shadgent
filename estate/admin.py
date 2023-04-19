@@ -82,20 +82,21 @@ class SaleAdmin(admin.ModelAdmin):
     ]
     list_per_page = 10
 
-
     def owner(self, owner: models.Estate.owner):
         return f'{owner.username}'
-    
+
+    # this function is for calculate discount price
     def discount_price(self, sale: models.Sale):
         Initialـprice = sale.price_per_meter * sale.estate.meterage
         discount = sale.discount
-        final_price = ((discount / 100) * Initialـprice )
+        final_price = ((discount / 100) * Initialـprice)
         return final_price
 
+    # this function is for calculate final price
     def final_price(self, sale: models.Sale):
         Initialـprice = sale.price_per_meter * sale.estate.meterage
         discount = sale.discount
-        amount = ((discount / 100) * Initialـprice )
+        amount = ((discount / 100) * Initialـprice)
         final_price = (Initialـprice - amount)
         return final_price
 
