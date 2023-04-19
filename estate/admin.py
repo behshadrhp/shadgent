@@ -73,8 +73,17 @@ class SaleAdmin(admin.ModelAdmin):
         'final_price',
         'exchange',
     ]
-    list_filter = []
-    search_fields = []
+    list_filter = [
+        'owner',
+        'exchange',
+    ]
+    search_fields = [
+        'owner__first_name__icontains',
+        'owner__last_name__icontains',
+        'estate__title__icontains',
+        'discount__icontains',
+        'price_per_meter__icontains',
+    ]
     fields = [
         'estate',
         'price_per_meter',
@@ -82,6 +91,7 @@ class SaleAdmin(admin.ModelAdmin):
         'exchange',
     ]
     list_per_page = 10
+    autocomplete_fields = ['estate']
 
     def owner(self, owner: models.Estate.owner):
         return f'{owner.username}'
