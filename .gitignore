@@ -4,9 +4,9 @@ Pipfile.lock
 env/
 
 # migrations
-account/migrations
+account/migrations/*
 !account/migrations/__init__.py
-estate/migrations
+estate/migrations/*
 !estate/migrations/__init__.py
 
 # pycache
