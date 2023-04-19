@@ -163,13 +163,6 @@ class Rent(models.Model):
     rent_of_months = MoneyField(
         max_digits=14, decimal_places=0, default_currency='USD'
     )
-    discount = models.IntegerField(
-        default=0,
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(100),
-        ]
-    )
 
     # property checklist
     exchange = models.BooleanField(default=False)
@@ -179,7 +172,7 @@ class Rent(models.Model):
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.estate
+        return self.estate.title
 
     class Meta:
         ordering = ['-update_at']
