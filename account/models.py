@@ -3,15 +3,14 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 from json import load
-from validate_email_address import validate_email
 
 # Create your models here.
 
 
 class User(AbstractUser):
-    '''
-    This class is for defining the user model whose fields are included username and email, first and last name and gender
-    '''
+    '''This class is for defining the user model whose fields are included username and email,
+    first and last name and gender'''
+
     GENDER = (
         ('mr', 'Man'),
         ('mrs', 'Female')
@@ -60,7 +59,6 @@ class User(AbstractUser):
 
     def clean(self):
         username = self.username.lower()  # get username
-        email = self.email  # get email
 
         with open('account/username-reserved/username.json', 'r') as usernames:
             username_reserved = load(usernames)
@@ -68,12 +66,6 @@ class User(AbstractUser):
         for item in username_reserved:
             if username == item:  # Checking the username that is not in the reserved usernames
                 raise ValidationError('Sorry, this username is not allowed')
-
-        verify_email = validate_email(email, check_mx=True, verify=True)
-        if verify_email == None or verify_email == False:  # check valid email
-            raise ValidationError(
-                'Your email is not valid. Please use a valid email'
-            )
 
     def __str__(self):
         return self.username
