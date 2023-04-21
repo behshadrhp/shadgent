@@ -1,7 +1,4 @@
 autopep8==2.0.1
 Django==4.1.7
 django-money==3.0.0
-mysqlclient==2.1.1
 pip-chill==1.0.3
-py3dns==3.2.1
-validate-email-address==1
