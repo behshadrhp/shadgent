@@ -2,20 +2,14 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField
 from json import load
-from validate_email_address import validate_email
-
-# Create your models here.
 
 
 class User(AbstractUser):
-    '''
-    This class is for defining the user model whose fields are included username and email, first and last name and gender
-    '''
-    GENDER = (
-        ('mr', 'Man'),
-        ('mrs', 'Female')
-    )
+    '''This class is for defining the user model whose fields are included username and email,
+    first and last name and gender'''
+
     username_regex = RegexValidator(
         regex=r'^[a-zA-Z][a-zA-Z0-9]{5,30}$',
         message='Only English letters and numbers are allowed, and the numbers must be after the letters, and the allowed characters are between 6 and 30',
@@ -49,18 +43,12 @@ class User(AbstractUser):
         verbose_name='Last Name',
         validators=[name_regex]
     )
-    gender = models.CharField(
-        max_length=10,
-        choices=GENDER,
-        verbose_name='Gender (mr/mrs)'
-    )  # choice gender
 
     USERNAME_FIELD = 'username'  # & Password is required by default.
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'gender']
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
     def clean(self):
         username = self.username.lower()  # get username
-        email = self.email  # get email
 
         with open('account/username-reserved/username.json', 'r') as usernames:
             username_reserved = load(usernames)
@@ -69,11 +57,51 @@ class User(AbstractUser):
             if username == item:  # Checking the username that is not in the reserved usernames
                 raise ValidationError('Sorry, this username is not allowed')
 
-        verify_email = validate_email(email, check_mx=True, verify=True)
-        if verify_email == None or verify_email == False:  # check valid email
-            raise ValidationError(
-                'Your email is not valid. Please use a valid email'
-            )
-
     def __str__(self):
         return self.username
+
+
+class Profile(models.Model):
+    '''This class is for completing the user profile'''
+
+    GENDER = (
+        ('mr', 'Man'),
+        ('mrs', 'Female')
+    )
+
+    # more information abut user
+    owner = models.OneToOneField(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='profile'
+    )
+    picture = models.ImageField(
+        upload_to='uploads/profile/', 
+        null=True, 
+        blank=True,
+    )
+    phone_number = PhoneNumberField(
+        null=True, 
+        blank=True,
+        unique=True,
+        region='CA',
+    )
+    gender = models.CharField(
+        max_length=10,
+        choices=GENDER,
+        verbose_name='Gender (mr/mrs)',
+        null=True, 
+        blank=True,
+    )  # choice gender
+    bio = models.TextField(null=True, blank=True,)
+    birthday = models.DateField(null=True, blank=True,)
+
+    # create - update Time
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.owner.username
+    
+    class Meta:
+        ordering = ['-update_at']

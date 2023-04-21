@@ -16,3 +16,6 @@ estate/__pycache__/
 
 # database
 db.sqlite3
+
+# media uploader directory
+uploads/
