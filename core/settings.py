@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # Framework - Library
     'djmoney', # currency
     'phonenumber_field', # number phone
+    'rest_framework', # django rest-framework
     #Applications
     'account', # User Account app
     'estate', # Real estate property information app
