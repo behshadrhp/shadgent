@@ -122,7 +122,7 @@ class Sale(models.Model):
         on_delete=models.CASCADE
     )
     price_per_meter = MoneyField(
-        max_digits=14, decimal_places=0, default_currency='USD'
+        max_digits=14, decimal_places=0, default_currency='USD', default=0
     )
     discount = models.IntegerField(
         default=0,
@@ -158,10 +158,10 @@ class Rent(models.Model):
         on_delete=models.CASCADE
     )
     annual_mortgage = MoneyField(
-        max_digits=14, decimal_places=0, default_currency='USD'
+        max_digits=14, decimal_places=0, default_currency='USD', default=0
     )
     rent_of_months = MoneyField(
-        max_digits=14, decimal_places=0, default_currency='USD'
+        max_digits=14, decimal_places=0, default_currency='USD', default=0
     )
 
     # property checklist
