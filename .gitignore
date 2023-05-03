@@ -10,9 +10,10 @@ estate/migrations/*
 !estate/migrations/__init__.py
 
 # pycache
-core/__pycache__/
-account/__pycache__/
-estate/__pycache__/
+core/__pycache__/*
+account/__pycache__/*
+estate/__pycache__/*
+estate/api/__pycache__/*
 
 # database
 db.sqlite3
