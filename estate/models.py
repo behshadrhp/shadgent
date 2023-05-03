@@ -143,7 +143,7 @@ class Sale(models.Model):
         return self.estate.title
 
     class Meta:
-        ordering = ['update_at']
+        ordering = ['-update_at']
 
 
 class Rent(models.Model):
