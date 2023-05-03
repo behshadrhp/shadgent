@@ -4,12 +4,15 @@ Pipfile.lock
 env/
 
 # migrations
+*/migrations/*
+!*/migrations/__init__.py
 account/migrations/*
 !account/migrations/__init__.py
 estate/migrations/*
 !estate/migrations/__init__.py
 
 # pycache
+*/__pycache__/*
 core/__pycache__/*
 account/__pycache__/*
 estate/__pycache__/*
