@@ -4,15 +4,12 @@ Pipfile.lock
 env/
 
 # migrations
-account/migrations/*
-!account/migrations/__init__.py
-estate/migrations/*
-!estate/migrations/__init__.py
+*/migrations/*
+!*/migrations/__init__.py
 
 # pycache
-core/__pycache__/
-account/__pycache__/
-estate/__pycache__/
+*/__pycache__/*
+*/*/__pycache__/*
 
 # database
 db.sqlite3
