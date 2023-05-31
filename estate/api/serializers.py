@@ -9,6 +9,7 @@ class EstateSerializer(serializers.ModelSerializer):
     '''
 
     owner = serializers.CharField(read_only=True)
+    slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = models.Estate
