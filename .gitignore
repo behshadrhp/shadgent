@@ -6,17 +6,10 @@ env/
 # migrations
 */migrations/*
 !*/migrations/__init__.py
-account/migrations/*
-!account/migrations/__init__.py
-estate/migrations/*
-!estate/migrations/__init__.py
 
 # pycache
 */__pycache__/*
-core/__pycache__/*
-account/__pycache__/*
-estate/__pycache__/*
-estate/api/__pycache__/*
+*/*/__pycache__/*
 
 # database
 db.sqlite3
